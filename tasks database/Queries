@@ -113,3 +113,16 @@ tb_top10_major_consumer_per_year;
 
 
 
+
+
+
+Qual a empresa que tem mais funcionarios como clientes do restaurante?
+
+SELECT e.nome_empresa, COUNT(*) AS numero_de_funcionarios
+FROM tb_empresa e
+LEFT JOIN tb_beneficio b ON e.codigo_empresa = b.codigo_empresa
+LEFT JOIN tb_cliente c ON b.email_funcionario = c.email_cliente
+GROUP BY e.nome_empresa
+ORDER BY numero_de_funcionarios DESC
+LIMIT 1;
+

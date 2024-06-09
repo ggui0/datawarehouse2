@@ -1,4 +1,4 @@
-Qual o cliente que mais fez pedidos por ano?
+QUAL O CLIENTE QUE MAIS FEZ PEDIDOS POR ANO?
 
 SELECT
 c.nome_cliente AS NomeCliente,
@@ -20,7 +20,7 @@ LIMIT 1;
 
 
 
-Qual o cliente que mais gastou em todos os anos?
+QUAL O CLIENTE QUE MAIS GASTOU EM TODOS OS ANOS?
 
 SELECT
     c.nome_cliente AS cliente,
@@ -44,7 +44,7 @@ LIMIT 1;
 
 
 
-Qual o período do ano em que o restaurante tem maior movimento?
+QUAL O PERÍODO DO ANO EM QUE O RESTAURANTE TEM MAIOR MOVIMENTO?
 
 SELECT
     YEAR(data_hora_entrada) AS ano,
@@ -65,7 +65,7 @@ LIMIT 1;
 
 
 
-Qual(is) o(s) cliente(s) que trouxe(ram) mais pessoas por ano?
+QUAL(IS) O(S) CLIENTE(S) QUE TROUXE(RAM) MAIS PESSOAS POR ANO?
 
 select distinct year(data_hora_entrada)
 from tb_mesa;
@@ -116,7 +116,7 @@ tb_top10_major_consumer_per_year;
 
 
 
-Qual a empresa que tem mais funcionarios como clientes do restaurante?
+QUAL A EMPRESA QUE TEM MAIS FUNCIONÁRIOS COMO CLIENTES DO RESTAURANTE?
 
 SELECT e.nome_empresa, COUNT(*) AS numero_de_funcionarios
 FROM tb_empresa e
@@ -126,3 +126,20 @@ GROUP BY e.nome_empresa
 ORDER BY numero_de_funcionarios DESC
 LIMIT 1;
 
+
+
+
+QUAL A EMPRESA QUE TEM MAIS FUNCIONÁRIOS QUE CONSOMEM SOBREMESAS POR ANO?
+
+SELECT e.nome_empresa, YEAR(ms.data_hora_entrada) AS ano, COUNT(DISTINCT c.id_cliente) AS numero_de_funcionarios
+FROM tb_empresa e
+JOIN tb_beneficio b ON e.codigo_empresa = b.codigo_empresa
+JOIN tb_cliente c ON b.codigo_funcionario = c.id_cliente
+JOIN tb_mesa ms ON c.id_cliente = ms.id_cliente
+JOIN tb_pedido pd ON ms.codigo_mesa = pd.codigo_mesa
+JOIN tb_prato p ON pd.codigo_prato = p.codigo_prato
+JOIN tb_tipo_prato tp ON p.codigo_tipo_prato = tp.codigo_tipo_prato
+WHERE tp.nome_tipo_prato = 'Sobremesa'
+GROUP BY e.nome_empresa, YEAR(ms.data_hora_entrada)
+ORDER BY COUNT(DISTINCT c.id_cliente) DESC
+LIMIT 1;
